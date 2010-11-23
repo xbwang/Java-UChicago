@@ -5,7 +5,7 @@
 	Usage: java TestMutString
 	
 3.	File: Student.java, SortStudent.java, ByGPANormal.java, ByGPARandom.java
-	Usage: java SortStudent <gpa1> <gpa2> <gpa3> <gpa4> <gpa5>...
+	Usage: java SortStudent <gpa1> <gpa2> <gpa3>...
 	
 4.	File: SimpleSort.java
 	Usage: java SimpleSort
