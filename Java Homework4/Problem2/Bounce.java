@@ -13,6 +13,6 @@ class BounceFrame extends JFrame{
 	private JPanel canvas;
 	
 	public BounceFrame(){
-		
+		//test
 	}
 }
