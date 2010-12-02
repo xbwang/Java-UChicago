@@ -34,14 +34,18 @@ class BounceFrame extends JFrame{
 			      Ball b = new Ball(canvas);
 			      b.bounce();
 			  }
+			  public void actionPerformedB(ActionEvent evt){ 
+			      Ball b = new Ball(canvas);
+			      b.bounce();
+			  }
 		      });
 
 	addButton(p, "Close",
-		  new ActionListener()
-		      {  public void actionPerformed(ActionEvent evt)
-			  {  System.exit(0);
+		  new ActionListener(){
+				public void actionPerformed(ActionEvent evt){  
+				System.exit(0);
 			  }
-		      });
+			});
 	contentPane.add(p, "South");
     }
     
