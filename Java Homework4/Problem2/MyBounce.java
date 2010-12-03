@@ -26,15 +26,18 @@ class BounceFrame extends JFrame{
 		canvas = new JPanel();
 		contentPane.add(canvas, "Center");
 		JPanel p = new JPanel();
-		addButton(p, "Start",
+		addButton(p, "Add Ball",
 				new ActionListener(){
 					public void actionPerformed(ActionEvent evt){
-								Ball ballA = new Ball(canvas, 0, 0);
-								ballA.bounce();
-								Ball ballB = new Ball(canvas, 300, 200);
-								ballB.bounce();
+						final Ball b = new Ball(canvas, 0, 0);
+						new Thread(){
+							public void run(){
+							     b.bounce();
 							}
+						}.start();
+					}
 				});
+		
 		addButton(p, "Close",
 				new ActionListener(){
 					public void actionPerformed(ActionEvent evt){
@@ -91,6 +94,7 @@ class Ball{
 		g.fillOval(x, y, XSIZE, YSIZE);
 		g.dispose();
 	}
+	
 	public void bounce(){
 		draw();
 		while(true){
