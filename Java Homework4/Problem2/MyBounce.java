@@ -12,38 +12,47 @@ public class MyBounce{
 class BounceFrame extends JFrame{
 	private JPanel canvas;
 	
-	public void addButton(Container c, String title, ActionListener a){
-		JButton b = new JButton(title);
-		c.add(b);
-		b.addActionListener(a);
-	}
-	
 	public BounceFrame(){
 		setSize(300, 200);
 		setTitle("MyBounce");
-		
+	
 		Container contentPane = getContentPane();
 		canvas = new JPanel();
 		contentPane.add(canvas, "Center");
 		JPanel p = new JPanel();
-		addButton(p, "Add Ball",
-				new ActionListener(){
-					public void actionPerformed(ActionEvent evt){
-						final Ball b = new Ball(canvas, 0, 0);
-						new Thread(){
-							public void run(){
-							     b.bounce();
-							}
-						}.start();
+	
+		JButton startButton = new JButton("Start");
+		JButton closeButton = new JButton("Close");
+		p.add(startButton);
+		p.add(closeButton);
+		ActionListener ballListener = new ActionListener(){
+			public void actionPerformed(ActionEvent evt){
+				boolean collision = false;
+				Ball[] ballArray = new Ball[2];
+				//for(int i = 0;i < 2;i++){
+					ballArray[0] = new Ball(canvas, 0, 0);
+					ballArray[1] = new Ball(canvas, 300, 200);
+				//}
+				int[] direction = new int[2];
+				while(true){
+					for(int i = 0;i < 2;i++){
+						direction = ballArray[i].getDirection();
+						ballArray[i].draw();
+						ballArray[i].move(direction, collision);
+						try{
+							Thread.sleep(5);
+						}catch(InterruptedException e){}
 					}
-				});
-		
-		addButton(p, "Close",
-				new ActionListener(){
-					public void actionPerformed(ActionEvent evt){
-						System.exit(0);
-					}
-				});
+				}
+			}
+		};
+		ActionListener closeListener = new ActionListener(){
+			public void actionPerformed(ActionEvent evt){
+				System.exit(0);
+			}
+		};
+		startButton.addActionListener(ballListener);
+		closeButton.addActionListener(closeListener);
 		contentPane.add(p, "South");
 	}
 }
@@ -68,10 +77,33 @@ class Ball{
 		g.fillOval(x, y, XSIZE, YSIZE);
 		g.dispose();
 	}
-	public void move(){
+	
+	public int[] getDirection(){
+		int[] direction = new int[2];
+		if(dx > 0){
+			direction[0] = 1;
+		}
+		else{
+			direction[0] = -1;
+		}
+		if(dy > 0){
+			direction[1] = 1;
+		}
+		else{
+			direction[1] = -1;
+		}
+		return direction;
+	}
+	
+	public void move(int[] direction, boolean collision){
 		Graphics g = box.getGraphics();
 		g.setXORMode(box.getBackground());
 		g.fillOval(x, y, XSIZE, YSIZE);
+		
+		if(collision == true){
+			x += dx*direction[0];
+			y += dy*direction[1];
+		}
 		x += dx;
 		y += dy;
 		Dimension d = box.getSize();
@@ -94,15 +126,4 @@ class Ball{
 		g.fillOval(x, y, XSIZE, YSIZE);
 		g.dispose();
 	}
-	
-	public void bounce(){
-		draw();
-		while(true){
-			move();
-			try{
-				Thread.sleep(5);
-			}catch(InterruptedException e){}
-		}
-	}
-	
 }
