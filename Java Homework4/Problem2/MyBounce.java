@@ -15,6 +15,10 @@ class BounceFrame extends JFrame{
 	boolean pause = false;
 	JButton startButton;
 	JButton pauseButton;
+	JButton resumeButton;
+	JButton closeButton;
+	int numOfBall;
+	Ball[] ballArray;
 	
 	public BounceFrame(){
 		setSize(300, 200);
@@ -22,51 +26,74 @@ class BounceFrame extends JFrame{
 	
 		Container contentPane = getContentPane();
 		canvas = new JPanel();
-		contentPane.add(canvas, "Center");
 		JPanel p = new JPanel();
+		contentPane.add(canvas, "Center");
 		startButton = new JButton("Start");
 		pauseButton = new JButton("Pause");
-		JButton resumeButton = new JButton("Resume");
-		JButton closeButton = new JButton("Close");
+		resumeButton = new JButton("Resume");
+		closeButton = new JButton("Close");
 		p.add(startButton);
 		p.add(pauseButton);
 		p.add(resumeButton);
 		p.add(closeButton);
-		pauseButton.setVisible(false);
+		resumeButton.setVisible(false);
 		ActionListener ballListener = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
 				pause = false;
-				startButton.setVisible(false);
-				pauseButton.setVisible(true);
+				/*
+				startButton.setEnabled(false);
 				new Thread(){
 					public void run(){
-						Ball[] ballArray = new Ball[2];
-						ballArray[0] = new Ball(canvas, 0, 0);
-						ballArray[1] = new Ball(canvas, 300, 0);
-						ballArray[0].draw();
-						ballArray[1].draw();
+				try{
+					Thread.sleep(500);
+					startButton.setEnabled(true);
+				}catch(InterruptedException e){}
+				}
+				}.start();
+				*/
+				new Thread(){
+					public void run(){
+						Ball ball = new Ball(canvas, 0, 0);
+						if(ballArray == null){
+							numOfBall = 0;
+						}else{
+							numOfBall = ballArray.length;
+						}
+						Ball[] tmpArray = new Ball[numOfBall+1];
+						for(int i = 0; i < numOfBall; i++){
+							tmpArray[i] = ballArray[i];
+						}
+						tmpArray[numOfBall] = ball;
+						ballArray = new Ball[numOfBall+1];
+						ballArray = tmpArray;
+						numOfBall = ballArray.length;
+						ball.draw();
 						while(true){
 							//collision detection
-							int[] directionA = new int[2];
-							int[] directionB = new int[2];
-							int[] positionA = new int[2];
-							int[] positionB = new int[2];
-							positionA = ballArray[0].getPosition();
-							positionB = ballArray[1].getPosition();
-							directionA = ballArray[0].getDirection();
-							directionB = ballArray[1].getDirection();
-							if((Math.pow(positionA[0]-positionB[0],2) + Math.pow(positionA[1]-positionB[1],2)) <= 100){
-								if(directionA[0] == directionB[0]){
-									ballArray[0].setDirection(1, -1);
-									ballArray[1].setDirection(1, -1);
-								}
-								if(directionA[1] == directionB[1]){
-									ballArray[0].setDirection(-1, 1);
-									ballArray[1].setDirection(-1, 1);
-								}
-								if(directionA[1] != directionB[1] && directionA[0] != directionB[0]){
-									ballArray[0].setDirection(-1, -1);
-									ballArray[1].setDirection(-1, -1);
+							for(int i = 0; i < numOfBall; i++){
+								for(int j = i+1; j < numOfBall; j++){
+									int[] directionA = new int[2];
+									int[] directionB = new int[2];
+									int[] positionA = new int[2];
+									int[] positionB = new int[2];
+									positionA = ballArray[i].getPosition();
+									positionB = ballArray[j].getPosition();
+									directionA = ballArray[i].getDirection();
+									directionB = ballArray[j].getDirection();
+									if((Math.pow(positionA[0]-positionB[0],2) + Math.pow(positionA[1]-positionB[1],2)) < 150){
+										if(directionA[0] == directionB[0]){
+											ballArray[i].setDirection(1, -1);
+											ballArray[j].setDirection(1, -1);
+										}
+										if(directionA[1] == directionB[1]){
+											ballArray[i].setDirection(-1, 1);
+											ballArray[j].setDirection(-1, 1);
+										}
+										if(directionA[1] != directionB[1] && directionA[0] != directionB[0]){
+												ballArray[i].setDirection(-1, -1);
+												ballArray[j].setDirection(-1, -1);
+										}
+									}
 								}
 							}
 							//pause
@@ -76,12 +103,10 @@ class BounceFrame extends JFrame{
 								}catch(InterruptedException e){}
 							}
 							//balls move
-							for(int i = 0;i < 2;i++){
-								ballArray[i].move();
-								try{
-									Thread.sleep(5);
-								}catch(InterruptedException e){}
-							}
+							ball.move();
+							try{
+								Thread.sleep(50);
+							}catch(InterruptedException e){}
 						}
 					}
 				}.start();
@@ -95,11 +120,15 @@ class BounceFrame extends JFrame{
 		ActionListener pauseListener = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
 				pause = true;
+				pauseButton.setVisible(false);
+				resumeButton.setVisible(true);
 			}
 		};
 		ActionListener resumeListener = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
 				pause = false;
+				pauseButton.setVisible(true);
+				resumeButton.setVisible(false);
 			}
 		};
 		startButton.addActionListener(ballListener);
@@ -119,6 +148,7 @@ class Ball{
 	private int dx = 2;
 	private int dy = 2;
 	private int[] direction = new int[2];
+	public boolean isDrawn = false;
 	
 	public Ball(JPanel box, int x, int y){
 		this.box = box;
@@ -141,6 +171,10 @@ class Ball{
 		Graphics g = box.getGraphics();
 		g.fillOval(x, y, XSIZE, YSIZE);
 		g.dispose();
+	}
+	
+	public void setDraw(boolean a){
+		this.isDrawn = a;
 	}
 	
 	public int[] getPosition(){
