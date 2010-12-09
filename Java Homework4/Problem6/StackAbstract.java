@@ -18,7 +18,7 @@ public class StackAbstract<T> extends AbstractCollection <T> {
         return this.stack.isEmpty();
     }
     
-    public T peak(){
+    public T peek(){
         return stack.get(this.size()-1);
 
     }
@@ -29,13 +29,9 @@ public class StackAbstract<T> extends AbstractCollection <T> {
         return tmp;
     }
     
-    public boolean push(T item){
-        if(search(item) == -1){
-			stack.add(item);
-			return true;
-		}else{
-			return false;
-		}
+    public T push(T item){
+		stack.add(item);
+        return item;
     }
     
 	public Iterator<T> iterator(){
@@ -43,51 +39,21 @@ public class StackAbstract<T> extends AbstractCollection <T> {
 	}
 	
 	public int search(T item){
-       return this.stack.indexOf(item);
+		return this.stack.indexOf(item);
 	}
    
 	public boolean add(T item){
-		return push(item);
+		push(item);
+		return true;
 	}
 	
-	public boolean addAll(Collection<? extends T> c){
-		throw new UnsupportedOperationException("#addAll# method is not supported.");
-	}
-	
-	public void clear(){
-		stack = new ArrayList<T>();
-	}
-	//not supported by stack
-	public boolean contains(Object o){
-		throw new UnsupportedOperationException("#contains# method is not supported.");
-	}
-	
-	public boolean containsAll(Collection<?> c){
-		throw new UnsupportedOperationException("#containsAll# method is not supported.");
-	}
-	
+	//not supported by stack, it's not proper to remove a object of stack from the middle
 	public boolean remove(Object o){
 		throw new UnsupportedOperationException("#remove# method is not supported.");
 	}
 	
 	public boolean removeAll(Collection<?> c){
 		throw new UnsupportedOperationException("#removeAll# method is not supported.");
-	}
-	
-	public boolean retainAll(Collection<?> c){
-		throw new UnsupportedOperationException("#retainAll# method is not supported.");
-	}
-	
-	public Object[] toArray(){
-		throw new UnsupportedOperationException("#toArray# method is not supported.");
-	}
-	
-	public <T> T[] toArray(T[] a){
-		throw new UnsupportedOperationException("#<T>toArray# method is not supported.");
-	}
-	
-	public String toString(){
-		throw new UnsupportedOperationException("#toString# method is not supported.");
 	}
 	
 }

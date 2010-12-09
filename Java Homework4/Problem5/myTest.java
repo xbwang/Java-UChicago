@@ -47,25 +47,19 @@ class myTest{
 		//Integer obj = new Integer(500000);
 		//ArrayList time
 		start = System.currentTimeMillis();
-		//for(int i = 0; i < 100; i++){
-			testArrayList.contains(1);
-		//}
+		testArrayList.contains(1);
 		end = System.currentTimeMillis();
 		elapsedTime = end - start;
 		System.out.println("- Time spent for retrieval by ArrayList is: "+elapsedTime);
 		//LinkedList time
 		start = System.currentTimeMillis();
-		//for(int i = 0; i < 100; i++){
-			testLinkedList.contains(1);
-		//}
+		testLinkedList.contains(1);
 		end = System.currentTimeMillis();
 		elapsedTime = end - start;
 		System.out.println("- Time spent for retrieval by LinkedList is: "+elapsedTime);
 		//Hashtable time
 		start = System.currentTimeMillis();
-		//for(int i = 0; i < 100; i++){
-			testHashSet.contains(1);
-		//}
+		testHashSet.contains(1);
 		end = System.currentTimeMillis();
 		elapsedTime = end - start;
 		System.out.println("- Time spent for retrieval by HashSet is: "+elapsedTime);

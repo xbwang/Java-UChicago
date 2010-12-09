@@ -30,18 +30,13 @@ public class Stack<T>{
 		}
     }
     
-    public boolean push(T item){
-		if(search(item) == -1){
-			Node next = new Node();
-	        next.item = item;
-	        next.last = this.node;
-	        this.node = next;
-	        length++;
-			
-			return true;
-		}
-
-        return false;
+   	public T push(T item){
+        Node next = new Node();
+        next.item = item;
+        next.last = this.node;
+        this.node = next;
+        length++;
+        return item;
     }
     
     public boolean empty(){

@@ -3,7 +3,7 @@ import java.util.Collection;
 import java.util.*;
 
 public class StackCollection<T> implements Collection<T>{
-    private int N;	//length
+    private int length;	//length
     private Node node;
     private class Node{
     private T item;
@@ -11,20 +11,20 @@ public class StackCollection<T> implements Collection<T>{
     }
     
     public StackCollection() {
-        N = 0;
+        length = 0;
     }
     public StackCollection(T item){
     	node.item = item;
     }
     
-    public T peak (){
+    public T peek (){
         return node.item;
     }
     
     public T pop(){
-        if (N == 0)
+        if (length == 0)
             throw new NullPointerException("Stack is empty.");
-        N--;
+        length--;
         T tmp;
         tmp = node.item;
         node = node.last;
@@ -37,20 +37,24 @@ public class StackCollection<T> implements Collection<T>{
     }
     
     public int size(){
-        return N;
+        return length;
     }
     
     public boolean isEmpty(){
-        if (N > 0)
+        if (length > 0)
             return false;
         else 
             return true;
     }
     
     public int search(T item){
-        if(N == 0)
-            throw new NullPointerException("Stack is empty.");
-        int distance = 0;
+	
+        if(length == 0){
+			return -1;
+		}
+            //throw new NullPointerException("Stack is empty.");
+	
+        int distance = 1;
         Node tmp = this.node;
         while(true){
         	if(tmp.item == item)
@@ -100,7 +104,7 @@ public class StackCollection<T> implements Collection<T>{
 	        next.item = item;
 	        next.last = this.node;
 	        this.node = next;
-	        N++;
+	        length++;
 			return true;
 		}else{
 			return false;

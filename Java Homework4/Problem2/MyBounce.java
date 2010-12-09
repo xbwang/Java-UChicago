@@ -40,17 +40,15 @@ class BounceFrame extends JFrame{
 		ActionListener ballListener = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
 				pause = false;
-				/*
 				startButton.setEnabled(false);
 				new Thread(){
 					public void run(){
 				try{
-					Thread.sleep(500);
+					Thread.sleep(200);
 					startButton.setEnabled(true);
 				}catch(InterruptedException e){}
 				}
 				}.start();
-				*/
 				new Thread(){
 					public void run(){
 						Ball ball = new Ball(canvas, 0, 0);
@@ -76,11 +74,18 @@ class BounceFrame extends JFrame{
 									int[] directionB = new int[2];
 									int[] positionA = new int[2];
 									int[] positionB = new int[2];
+									int dxA, dxB, dyA, dyB;
 									positionA = ballArray[i].getPosition();
 									positionB = ballArray[j].getPosition();
+									dxA = ballArray[i].dx;
+									dxB = ballArray[j].dx;
+									dyA = ballArray[i].dy;
+									dyB = ballArray[j].dy;
 									directionA = ballArray[i].getDirection();
 									directionB = ballArray[j].getDirection();
-									if((Math.pow(positionA[0]-positionB[0],2) + Math.pow(positionA[1]-positionB[1],2)) < 150){
+									double da = Math.pow(positionA[0]-positionB[0],2) + Math.pow(positionA[1]-positionB[1],2);
+									double db = Math.pow(positionA[0]+dxA-positionB[0]-dxB,2) + Math.pow(positionA[1]+dyA-positionB[1]-dyB,2);
+									if(da < 100 && db < da){
 										if(directionA[0] == directionB[0]){
 											ballArray[i].setDirection(1, -1);
 											ballArray[j].setDirection(1, -1);
@@ -145,8 +150,8 @@ class Ball{
 	private static final int YSIZE = 10;
 	private int x;
 	private int y;
-	private int dx = 2;
-	private int dy = 2;
+	public int dx = 2;
+	public int dy = 2;
 	private int[] direction = new int[2];
 	public boolean isDrawn = false;
 	
